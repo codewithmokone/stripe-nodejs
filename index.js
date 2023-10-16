@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express');
 const cors =require('cors');
-const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+const stripe = require('stripe')('sk_test_51NxnC4BeSY6ufzumzretfIa7suqhZY4hk8nU7t3ntDvbAdswsUuHWQ75IfauAITSNKLVIDqnsmkE7quZxFLXhXgk00ht2ozEUb');
 // const stripe = Stripe()
 
 const app = express();
@@ -12,13 +12,13 @@ app.use(cors());
 
 app.post('/pay', async (req, res) => {
     try {
-        const {name} = req.body;
-        if(!name) return res.status(400).json({message: 'Please enter a name'});
+        // const {name} = req.body;
+        // if(!name) return res.status(400).json({message: 'Please enter a name'});
         const paymentIntent = await stripe.paymentIntents.create({
             amount:1000,
             currency: 'zar',
             payment_method_types: ["card"],
-            metadata: {name}
+            automatic_payment_methods: {enabled: true},
         });
         const clientSecret = paymentIntent.client_secret;
         res.json({ message: 'Payment initiated', clientSecret })
