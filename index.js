@@ -1,8 +1,8 @@
 require('dotenv').config()
 const express = require('express');
 const cors =require('cors');
-const Stripe = require('stripe');
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// const stripe = Stripe()
 
 const app = express();
 const PORT = 8080;
@@ -15,8 +15,8 @@ app.post('/pay', async (req, res) => {
         const {name} = req.body;
         if(!name) return res.status(400).json({message: 'Please enter a name'});
         const paymentIntent = await stripe.paymentIntents.create({
-            amount:Math.round(1000),
-            currency: 'ZAR',
+            amount:1000,
+            currency: 'zar',
             payment_method_types: ["card"],
             metadata: {name}
         });
