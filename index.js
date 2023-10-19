@@ -9,14 +9,14 @@ const PORT = 8080;
 app.use(express.json());
 app.use(cors());
 
+
 app.post('/pay', async (req, res) => {
     try {
-        const {name} = req.body;
+        const {name, amount} = req.body;
         if(!name) return res.status(400).json({message: 'Please enter a name'});
         const paymentIntent = await stripe.paymentIntents.create({
-            amount:1000,
+            amount: amount,
             currency: 'zar',
-            // payment_method_types: ["card"],
             automatic_payment_methods: {enabled: true},
         });
         const clientSecret = paymentIntent.client_secret;
